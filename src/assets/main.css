@@ -1,0 +1,20 @@
+html,
+body {
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}
+
+p {
+  margin: 0;
+}
+
+.right0 {
+  right: 0px !important;
+}
+
+a {
+  text-decoration: none;
+}
