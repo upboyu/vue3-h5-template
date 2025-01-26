@@ -64,9 +64,6 @@ export default defineConfig(({ command, mode }) => {
             minPixelValue: 1, // 设置最小的转换数值，如果为1的话，只有大于1的值会被转换
             mediaQuery: false, // 媒体查询里的单位是否需要转换单位
             replace: true, //  是否直接更换属性值，而不添加备用属性
-            landscape: false, // 是否添加根据 landscapeWidth 生成的媒体查询条件 @media (orientation: landscape)
-            landscapeUnit: 'vw', // 横屏时使用的单位
-            landscapeWidth: 1125, // 横屏时使用的视口宽度
           }),
         ],
       },

@@ -1,9 +1,9 @@
 export function useLoading() {
   let loadingToast
 
-  const openLoading = () => {
+  const openLoading = (text = '加载中...') => {
     loadingToast = showLoadingToast({
-      message: '加载中...',
+      message: text,
       forbidClick: true,
       duration: 0,
     })

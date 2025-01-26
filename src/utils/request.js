@@ -7,27 +7,30 @@ const { openLoading, closeLoading } = useLoading()
  * service 使用说明
  *
  * @param {Object} config - 配置选项
- * @param {Boolean} config.showLoading - 是否显示加载动画。默认不显示。
- * @param {Boolean | Object | String} config.showErrorMessage - 是否显示错误消息。
- *   - 如果是对象，可能包含：
- *     - {String} title - 错误消息的标题。默认不显示标题。
- *     - {String} text - 错误消息的文本。默认显示接口返回值的 message 字段。
- *   - 如果是字符串，则作为错误消息的标题。（文本显示接口返回值的 message 字段。）
- *   - 如果是 true，则等价于 '{}'。（不显示标题。文本显示接口返回值的 message 字段。）
  *
+ * @param {Boolean | Object} config.showLoading - 是否显示加载动画（默认不显示）。
+ *   - 如果为对象：
+ *     @property {String} [text] - 加载动画的自定义文本信息（可选）
+ *
+ * @param {Boolean | String | Object} config.showErrorMessage - 是否显示错误消息（默认不显示）。
+ *   - 如果为 `true`：显示接口返回的 `message` 字段，无标题。
+ *   - 如果为字符串：作为错误消息的标题，文本显示接口返回的 `message` 字段。
+ *   - 如果为对象：
+ *     @property {String} [title] - 错误消息的标题（可选，默认为空）。
+ *     @property {String} [text] - 错误消息的文本（可选，默认显示接口返回的 `message` 字段）。
  */
 
 // 创建一个 axios 实例
 const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 10000,
+  timeout: 60000,
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 })
 
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    config.showLoading && openLoading()
+    config.showLoading && openLoading(config.showLoading?.text)
     // 从 localStorage 中获取 token, 将其添加到请求头中
     const token = localStorage.getItem('X-Token')
     const clientId = localStorage.getItem('X-ClientId')
@@ -40,7 +43,7 @@ service.interceptors.request.use(
   (error) => {
     closeLoading()
     return handleError(error)
-  }
+  },
 )
 
 // 响应拦截器
@@ -71,7 +74,7 @@ service.interceptors.response.use(
   (error) => {
     closeLoading()
     return handleError(error)
-  }
+  },
 )
 
 function handleError(result) {
