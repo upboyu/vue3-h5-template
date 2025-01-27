@@ -9,9 +9,17 @@
       </RouterLink>
     </header>
   </div>
-  <div class="home">home</div>
+  <div class="home">
+    <van-button type="primary" @click="handleClick()">button</van-button>
+  </div>
 </template>
-<script setup></script>
+<script setup>
+// button
+import { badRequest } from '@/api/example'
+function handleClick() {
+  badRequest()
+}
+</script>
 <style scoped lang="scss">
 .wrap {
   padding-top: 120px;

@@ -12,9 +12,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
-  rules: {
-    'vue/multi-word-component-names': 'error', // 保持其他地方的规则
-  },
   overrides: [
     {
       files: ['src/components/**/index.vue'], // 指定 index.vue 文件

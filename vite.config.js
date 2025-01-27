@@ -13,8 +13,22 @@ import { VantResolver } from '@vant/auto-import-resolver'
 export default defineConfig(({ command, mode }) => {
   return {
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    // 如需部署到某域名的子地址，请设置这里。例如：'/refficiencyh5'。此时所有资源的路径都将据此配置重写
-    base: command === 'build' && mode !== 'development' ? '/refficiencyh5' : '/',
+    // 如需部署到某域名的子地址，请修改 base。例如：'/refficiencyh5'。此时所有资源的路径都将据此配置重写
+    base: command === 'build' && mode !== 'development' ? '/refficiencyh5' /* 域名的子地址 */ : '/',
+    build: {
+      target: 'es2015',
+    },
+    server: {
+      port: 80,
+      host: true,
+      proxy: {
+        '/dev-api': {
+          target: 'http://run.mocky.io', // 后端地址
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/dev-api/, ''),
+        },
+      },
+    },
     plugins: [
       vue(),
       vueJsx(),
@@ -31,23 +45,9 @@ export default defineConfig(({ command, mode }) => {
         resolvers: [VantResolver()],
       }),
     ],
-    build: {
-      target: 'es2015',
-    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-      },
-    },
-    server: {
-      port: 80,
-      host: true,
-      proxy: {
-        '/dev-api': {
-          target: 'http://www.xxx.com',
-          changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, ''),
-        },
       },
     },
     css: {
